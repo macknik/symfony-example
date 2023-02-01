@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: True
+  gather_facts: False
+
+  pre_tasks:
+    - raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+    - setup: # aka gather_facts
+
+  vars_files:
+    - "./vars/database_server_vars.yml"
+
+  roles:
+    - { role: common }
+    - { role: geerlingguy.pip }
+    - { role: dbutils }
+    - { role: geerlingguy.mysql }
